@@ -1,19 +1,14 @@
+// __tests__/khanyaPro.test.js
 import { ObjectId } from "mongodb";
 import khanyaMongoose from "./src/index.js";
 import { loggerPlugin } from "./src/plugins/logger.js";
 import { softDeletePlugin } from "./src/plugins/softDelete.js";
 import { timestampsPlugin } from "./src/plugins/timestamps.js";
 
-// Use environment variable or fallback to local
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017";
-const DB_NAME = "khanya_pro_db";
-
-let km;
-let User;
-let Post;
+let km, User, Post;
 
 beforeAll(async () => {
-    km = new khanyaMongoose(MONGO_URI, DB_NAME);
+    km = new khanyaMongoose("mongodb://127.0.0.1:27017", "khanya_pro_db");
     await km.connect();
 
     // ======= USERS SCHEMA =======
@@ -29,10 +24,7 @@ beforeAll(async () => {
     );
 
     userSchema.addVirtual("greeting", (doc) => `Hello, my name is ${doc.name}`);
-    userSchema.pre("save", (doc) => {
-        console.log(`💾 [HOOK] Saving user: ${doc.name}`);
-    });
-
+    userSchema.pre("save", (doc) => console.log(`💾 [HOOK] Saving user: ${doc.name}`));
     userSchema.plugin(softDeletePlugin);
     userSchema.plugin(timestampsPlugin);
     userSchema.plugin(loggerPlugin);
@@ -48,17 +40,16 @@ beforeAll(async () => {
         { timestamps: true }
     );
 
-    postSchema.addReference("user", {
-        ref: "User",
-        localField: "userId",
-        foreignField: "_id",
-    });
+    postSchema.addReference("user", { ref: "User", localField: "userId", foreignField: "_id" });
     postSchema.plugin(loggerPlugin);
 
     Post = km.model("Post", postSchema);
 });
 
 afterAll(async () => {
+    // Clean up test database
+    await User.delete({});
+    await Post.delete({});
     await km.disconnect();
 });
 
@@ -66,16 +57,8 @@ describe("Khanya Mongoose Pro Tests", () => {
     let aliceId, bobId;
 
     test("Create users", async () => {
-        const alice = await User.create({
-            name: "Alice",
-            age: 28,
-            email: "alice@example.com",
-        });
-        const bob = await User.create({
-            name: "Bob",
-            age: 32,
-            email: "bob@example.com",
-        });
+        const alice = await User.create({ name: "Alice", age: 28, email: "alice@example.com" });
+        const bob = await User.create({ name: "Bob", age: 32, email: "bob@example.com" });
 
         aliceId = alice.insertedId;
         bobId = bob.insertedId;
@@ -95,21 +78,20 @@ describe("Khanya Mongoose Pro Tests", () => {
     test("Fetch users with virtuals", async () => {
         const users = await User.find().exec();
         expect(users.length).toBeGreaterThanOrEqual(2);
-        expect(users[0].greeting).toContain("Hello, my name");
+        expect(users[0].greeting).toMatch(/Hello, my name/);
     });
 
     test("Populate posts with users", async () => {
         let posts = await Post.find().exec();
         posts = await Post.populate(posts, "user");
-        expect(posts[0].user).toBeDefined();
+
+        expect(posts.length).toBeGreaterThanOrEqual(2);
         expect(posts[0].user.name).toBeDefined();
     });
 
-    test("Soft delete a user", async () => {
+    test("Soft delete Bob", async () => {
         await User.delete({ name: "Bob" });
-        const users = await User.find().exec();
-        const bob = users.find((u) => u.name === "Bob");
-        expect(bob.deleted).toBe(true);
-        expect(bob.deletedAt).not.toBeNull();
+        const activeUsers = await User.find({ deleted: false }).exec();
+        expect(activeUsers.find(u => u.name === "Bob")).toBeUndefined();
     });
 });

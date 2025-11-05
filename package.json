@@ -19,7 +19,7 @@
     "chaining"
   ],
   "scripts": {
-    "test": "jest --verbose"
+    "test": "jest --detectOpenHandles --forceExit"
   },
   "author": "Khanyakwezwe Dlamini",
   "license": "MIT",
