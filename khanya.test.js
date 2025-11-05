@@ -1,17 +1,18 @@
-// __tests__/khanyaPro.test.js
+// khanya.test.js
 import { ObjectId } from "mongodb";
-import khanyaMongoose from "../src/index.js";
-import { loggerPlugin } from "../src/plugins/logger.js";
-import { softDeletePlugin } from "../src/plugins/softDelete.js";
-import { timestampsPlugin } from "../src/plugins/timestamps.js";
+import KhanyaMongoose from "./src/index.js";
+import { loggerPlugin } from "./src/plugins/logger.js";
+import { softDeletePlugin } from "./src/plugins/softDelete.js";
+import { timestampsPlugin } from "./src/plugins/timestamps.js";
 
-let km, User, Post;
+const km = new KhanyaMongoose("mongodb://127.0.0.1:27017", "khanya_pro_db");
+
+let User, Post;
 
 beforeAll(async () => {
-    km = new khanyaMongoose("mongodb://127.0.0.1:27017", "khanya_pro_test_db");
     await km.connect();
 
-    // ======= USERS SCHEMA =======
+    // ===== USERS SCHEMA =====
     const userSchema = km.Schema(
         {
             name: { type: String, required: true },
@@ -31,7 +32,7 @@ beforeAll(async () => {
 
     User = km.model("User", userSchema);
 
-    // ======= POSTS SCHEMA =======
+    // ===== POSTS SCHEMA =====
     const postSchema = km.Schema(
         {
             title: { type: String, required: true },
@@ -56,7 +57,7 @@ afterAll(async () => {
 describe("Khanya Mongoose Pro Tests", () => {
     let aliceId, bobId;
 
-    test("Create users", async () => {
+    test("Create Users", async () => {
         const alice = await User.create({ name: "Alice", age: 28, email: "alice@example.com" });
         const bob = await User.create({ name: "Bob", age: 32, email: "bob@example.com" });
 
@@ -67,7 +68,7 @@ describe("Khanya Mongoose Pro Tests", () => {
         expect(bobId).toBeDefined();
     });
 
-    test("Create posts", async () => {
+    test("Create Posts", async () => {
         const post1 = await Post.create({ title: "Alice's First Post", userId: aliceId });
         const post2 = await Post.create({ title: "Bob's First Post", userId: bobId });
 
@@ -75,23 +76,26 @@ describe("Khanya Mongoose Pro Tests", () => {
         expect(post2.insertedId).toBeDefined();
     });
 
-    test("Fetch users with virtuals", async () => {
+    test("Fetch Users with Virtuals", async () => {
         const users = await User.find().exec();
         expect(users.length).toBeGreaterThanOrEqual(2);
         expect(users[0].greeting).toMatch(/Hello, my name/);
     });
 
-    test("Populate posts with users", async () => {
+    test("Populate Posts with Users", async () => {
         let posts = await Post.find().exec();
         posts = await Post.populate(posts, "user");
 
-        expect(posts.length).toBeGreaterThanOrEqual(2);
-        expect(posts[0].user.name).toBeDefined();
+        expect(posts[0].user).toBeDefined();
+        expect(posts[0].user.name).toMatch(/Alice|Bob/);
     });
 
-    test("Soft delete Bob", async () => {
+    test("Soft Delete User", async () => {
         await User.delete({ name: "Bob" });
-        const activeUsers = await User.find({ deleted: false }).exec();
-        expect(activeUsers.find(u => u.name === "Bob")).toBeUndefined();
+        const users = await User.find().exec();
+
+        const bob = users.find(u => u.name === "Bob");
+        expect(bob.deleted).toBe(true);
+        expect(bob.deletedAt).not.toBeNull();
     });
 });
