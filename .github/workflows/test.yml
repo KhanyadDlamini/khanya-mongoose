@@ -56,6 +56,9 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests
-        run: node --experimental-vm-modules ./node_modules/jest/bin/jest.js --verbose
+      - name: Run Jest Tests
+        env:
+          MONGO_URI: mongodb://localhost:27017
+        run: npm test
 
+ 
