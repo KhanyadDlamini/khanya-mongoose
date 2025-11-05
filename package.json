@@ -1,0 +1,26 @@
+{
+  "name": "khanya-mongoose",
+  "version": "1.0.2",
+  "description": "MongoDB ODM with schema validation, hooks, virtuals, plugins, soft delete, chaining, and populate support",
+  "main": "src/index.js",
+  "type": "module",
+  "keywords": [
+    "mongodb",
+    "odm",
+    "mongoose",
+    "model",
+    "schema",
+    "pro",
+    "hooks",
+    "virtuals",
+    "plugins",
+    "soft-delete",
+    "populate",
+    "chaining"
+  ],
+  "author": "Khanyakwezwe Dlamini",
+  "license": "MIT",
+  "dependencies": {
+    "mongodb": "^6.20.0"
+  }
+}

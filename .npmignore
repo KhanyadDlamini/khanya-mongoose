@@ -1,0 +1,15 @@
+# Node modules
+node_modules
+
+# Test files
+test.js
+tests/
+__tests__/
+
+# Config files
+.vscode/
+.env
+.DS_Store
+
+# Local build artifacts or logs
+*.log
