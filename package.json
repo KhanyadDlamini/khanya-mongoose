@@ -24,7 +24,7 @@
   "author": "Khanyakwezwe Dlamini",
   "license": "MIT",
   "dependencies": {
-    "mongodb": "^6.20.0"
+    "mongodb": "^6.21.0"
   },
   "devDependencies": {
     "@types/jest": "^30.0.0",

@@ -1,4 +1,13 @@
 # Khanya Mongoose
+# khanya-mongoose
+
+[![npm version](https://img.shields.io/npm/v/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
+[![npm downloads](https://img.shields.io/npm/dm/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
+[![license](https://img.shields.io/npm/l/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
+[![GitHub repo](https://img.shields.io/badge/github-KhanyadDlamini%2Fkhanya--mongoose-blue)](https://github.com/KhanyadDlamini/khanya-mongoose)
+
+[![NPM](https://nodei.co/npm/khanya-mongoose.png)](https://npmjs.org/package/khanya-mongoose)
+
 
 A powerful and flexible MongoDB Object Data Modeling (ODM) library for Node.js, featuring built-in schema validation, middleware hooks, virtual fields, plugins, soft deletes, query chaining, and population support.
 
