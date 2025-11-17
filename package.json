@@ -18,6 +18,14 @@
     "populate",
     "chaining"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/KhanyadDlamini/khanya-mongoose.git"
+  },
+  "bugs": {
+    "url": "https://github.com/KhanyadDlamini/khanya-mongoose/issues"
+  },
+  "homepage": "https://github.com/KhanyadDlamini/khanya-mongoose#readme",
   "scripts": {
     "test": "jest --detectOpenHandles --forceExit"
   },
