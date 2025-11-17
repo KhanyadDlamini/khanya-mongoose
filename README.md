@@ -1,4 +1,3 @@
-# Khanya Mongoose
 # khanya-mongoose
 
 [![npm version](https://img.shields.io/npm/v/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
