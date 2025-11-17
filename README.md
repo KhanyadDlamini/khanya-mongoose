@@ -1,5 +1,6 @@
 # khanya-mongoose
-
+[![CI Status](https://github.com/KhanyadDlamini/khanya-mongoose/actions/workflows/node-ci.yml/badge.svg)](https://github.com/KhanyadDlamini/khanya-mongoose/actions)
+[![NPM Version](https://img.shields.io/npm/v/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
 [![npm version](https://img.shields.io/npm/v/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
 [![npm downloads](https://img.shields.io/npm/dm/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
 [![license](https://img.shields.io/npm/l/khanya-mongoose)](https://www.npmjs.com/package/khanya-mongoose)
