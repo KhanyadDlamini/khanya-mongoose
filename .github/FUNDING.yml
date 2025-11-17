@@ -1,0 +1,15 @@
+# These are supported funding model platforms
+
+github: [KhanyadDlamini]            # GitHub Sponsors
+patreon:                            # (leave empty if not using Patreon)
+open_collective: KhanyadDlamini     # Open Collective username
+ko_fi: KhanyadDlamini                # Ko-fi username
+tidelift:                            # (leave empty if not using Tidelift)
+community_bridge:                     # (leave empty if not using Community Bridge)
+liberapay:                            # (leave empty if not using Liberapay)
+issuehunt:                            # (leave empty if not using IssueHunt)
+lfx_crowdfunding:                     # (leave empty if not using LFX Crowdfunding)
+polar:                                # (leave empty if not using Polar)
+buy_me_a_coffee: Khanyakwezwe        # Buy Me a Coffee username
+thanks_dev:                            # (leave empty if not using thanks.dev)
+custom: ['https://buymeacoffee.com/Khanyakwezwe', 'https://opencollective.com/khanyakwezwe-dlamini']
