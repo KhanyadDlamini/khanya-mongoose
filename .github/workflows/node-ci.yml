@@ -12,55 +12,59 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x] # Adjust to your Node version
+        node-version: [18.x] # adjust to your Node version
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-    - name: Install dependencies
-      run: |
-        if [ -f package-lock.json ]; then
-          npm ci
-        else
-          npm install
-        fi
+      - name: Install dependencies
+        run: |
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-    - name: Run linter (if exists)
-      run: |
-        if npm run | grep -q 'lint'; then
-          npm run lint
-        else
-          echo "No lint script found, skipping..."
-        fi
+      - name: Run linter (if exists)
+        run: |
+          if npm run | grep -q 'lint'; then
+            npm run lint
+          else
+            echo "No lint script found, skipping..."
+          fi
 
-    - name: Run tests (if exists)
-      run: |
-        if npm run | grep -q 'test'; then
-          npm test || echo "Tests failed, but workflow continues."
-        else
-          echo "No test script found, skipping..."
-        fi
-      env:
-        NODE_ENV: test
+      - name: Run tests (if exists)
+        run: |
+          if npm run | grep -q 'test'; then
+            npm test || echo "Tests failed, but workflow continues."
+          else
+            echo "No test script found, skipping..."
+          fi
+        env:
+          NODE_ENV: test
 
-    - name: Build project (if exists)
-      run: |
-        if npm run | grep -q 'build'; then
-          npm run build
-        else
-          echo "No build script found, skipping..."
-        fi
+      - name: Build project (if exists)
+        run: |
+          if npm run | grep -q 'build'; then
+            npm run build
+          else
+            echo "No build script found, skipping..."
+          fi
 
-    - name: Upload coverage report (optional)
-      if: success() && test -d coverage
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-report
-        path: coverage
+      - name: Upload coverage report (optional)
+        run: |
+          if [ -d coverage ]; then
+            echo "Uploading coverage report..."
+            # Use official upload action
+            echo "coverage" > path.txt
+            gh actions upload-artifact --name coverage-report --path coverage
+          else
+            echo "No coverage folder found, skipping..."
+          fi
